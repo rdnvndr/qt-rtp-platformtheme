@@ -12,6 +12,7 @@ class RTPTheme : public QPlatformTheme
     Q_DECLARE_PRIVATE(RTPTheme)
 public:
     RTPTheme();
+    virtual ~RTPTheme();
 
     QPlatformMenuItem *createPlatformMenuItem() const override;
     QPlatformMenu *createPlatformMenu() const override;
@@ -45,6 +46,8 @@ public:
 
 private:
     QScopedPointer<RTPThemePrivate> d_ptr;
+    QFont                          *m_font;
+    QPalette                       *m_palette;
     Q_DISABLE_COPY_MOVE(RTPTheme)
 };
 

@@ -29,6 +29,32 @@ RTPTheme::RTPTheme()
     : d_ptr(new RTPThemePrivate)
 {
     Q_D(RTPTheme);
+    
+    m_font = new QFont("Verdana",8);
+    QStringList active {
+        "#000000", "#d3d3d3", "#ffffff", "#e9e9e9", "#696969", "#8d8d8d",
+        "#000000", "#ffffff", "#000000", "#fdfcfa", "#d3d3d3", "#000000",
+        "#232323", "#ffffff", "#0000ff", "#644a9b", "#faf6ef", "#000000",
+        "#ffffdc", "#000000" };
+    QStringList disabled {
+        "#808080", "#d3d3d3", "#ffffff", "#f3f3f3", "#696969", "#8d8d8d",
+        "#808080", "#ffffff", "#808080", "#fdfcfa", "#d3d3d3", "#000000",
+        "#232323", "#808080", "#0000ff", "#644a9b", "#faf6ef", "#000000",
+        "#ffffdc", "#000000" };
+    QStringList inactive {
+        "#000000", "#d3d3d3", "#ffffff", "#f3f3f3", "#696969", "#8d8d8d",
+        "#000000", "#ffffff", "#000000", "#fdfcfa", "#d3d3d3", "#000000",
+        "#232323", "#ffffff", "#0000ff", "#644a9b", "#faf6ef", "#000000",
+        "#ffffdc", "#000000" };
+
+    m_palette = new QPalette(Qt::black);
+    for (int i = 0; i < qMin(active.count(), int(QPalette::NColorRoles)); ++i)
+    {
+        QPalette::ColorRole colorRole = (QPalette::ColorRole)i;
+        m_palette->setColor(QPalette::Active,   colorRole, QColor(active[i]));
+        m_palette->setColor(QPalette::Disabled, colorRole, QColor(disabled[i]));
+        m_palette->setColor(QPalette::Inactive, colorRole, QColor(inactive[i]));
+    }
 
     QStringList themeNames;
     themeNames += QGuiApplicationPrivate::platform_integration->themeNames();
@@ -53,6 +79,12 @@ RTPTheme::RTPTheme()
     // 3) Fall back on the built-in "null" platform theme.
     if (!d->baseTheme)
         d->baseTheme = new QPlatformTheme;
+}
+
+RTPTheme::~RTPTheme()
+{
+    delete m_font;
+    delete m_palette;
 }
 
 QPlatformMenuItem* RTPTheme::createPlatformMenuItem() const
@@ -108,34 +140,8 @@ const QPalette *RTPTheme::palette(Palette type) const
 {
     Q_D(const RTPTheme);
 
-    if (type == SystemPalette) {
-        QStringList active {
-            "#000000", "#d3d3d3", "#ffffff", "#e9e9e9", "#696969", "#8d8d8d",
-            "#000000", "#ffffff", "#000000", "#fdfcfa", "#d3d3d3", "#000000",
-            "#232323", "#ffffff", "#0000ff", "#644a9b", "#faf6ef", "#000000",
-            "#ffffdc", "#000000" };
-        QStringList disabled {
-            "#808080", "#d3d3d3", "#ffffff", "#f3f3f3", "#696969", "#8d8d8d",
-            "#808080", "#ffffff", "#808080", "#fdfcfa", "#d3d3d3", "#000000",
-            "#232323", "#808080", "#0000ff", "#644a9b", "#faf6ef", "#000000",
-            "#ffffdc", "#000000" };
-        QStringList inactive {
-            "#000000", "#d3d3d3", "#ffffff", "#f3f3f3", "#696969", "#8d8d8d",
-            "#000000", "#ffffff", "#000000", "#fdfcfa", "#d3d3d3", "#000000",
-            "#232323", "#ffffff", "#0000ff", "#644a9b", "#faf6ef", "#000000",
-            "#ffffdc", "#000000" };
-
-        QPalette *pal = new QPalette(Qt::black);
-        for (int i = 0; i < qMin(active.count(), int(QPalette::NColorRoles)); ++i)
-        {
-            QPalette::ColorRole colorRole = (QPalette::ColorRole)i;
-            pal->setColor(QPalette::Active,   colorRole, QColor(active[i]));
-            pal->setColor(QPalette::Disabled, colorRole, QColor(disabled[i]));
-            pal->setColor(QPalette::Inactive, colorRole, QColor(inactive[i]));
-        }
-
-        return pal;
-    }
+    if (type == SystemPalette)
+        return m_palette;
 
     return d->baseTheme->palette(type);
 }
@@ -144,7 +150,7 @@ const QFont* RTPTheme::font(Font type) const
 {
     Q_D(const RTPTheme);
 
-    return new QFont("Verdana",8);
+    return m_font;
 }
 
 QVariant RTPTheme::themeHint(ThemeHint hint) const
