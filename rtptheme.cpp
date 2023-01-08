@@ -30,7 +30,7 @@ RTPTheme::RTPTheme()
 {
     Q_D(RTPTheme);
     
-    m_font = new QFont("Verdana",8);
+    m_font = new QFont("Open Sans",8);
     QStringList active {
         "#000000", "#d3d3d3", "#ffffff", "#e9e9e9", "#696969", "#8d8d8d",
         "#000000", "#ffffff", "#000000", "#fdfcfa", "#d3d3d3", "#000000",
