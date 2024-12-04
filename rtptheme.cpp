@@ -44,7 +44,7 @@ RTPTheme::RTPTheme()
     QStringList inactive {
         "#000000", "#d3d3d3", "#ffffff", "#f3f3f3", "#696969", "#8d8d8d",
         "#000000", "#ffffff", "#000000", "#fdfcfa", "#d3d3d3", "#000000",
-        "#232323", "#ffffff", "#0000ff", "#644a9b", "#faf6ef", "#000000",
+        "#808080", "#ffffff", "#0000ff", "#644a9b", "#faf6ef", "#000000",
         "#ffffdc", "#000000" };
 
     m_palette = new QPalette(Qt::black);
